@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.StandardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Standard">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="del" property="del"/>
+        <result column="minv" property="minv"/>
+        <result column="maxv" property="maxv"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.shipmap.modules.base.model.NameVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, remark, create_time, creator, update_time, updator, del, minv, maxv
+    </sql>
+
+    <select id="selectIdSeq" resultType="java.lang.Integer">
+  	  select nextval('tb_standard_id_seq')
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap2">
+        select s.id,s.name from tb_standard s where s.del=0
+    </select>
+
+    <select id="slelectRemainStandard" resultMap="BaseResultMap2">
+        select ts.id,ts.name from tb_standard ts where not exists(select * from tb_ship_standard tss where ts.id=tss.standard_id and tss.ship_id=#{id} )
+    </select>
+    <!--剩余规格信息查询语句-->
+    <select id="selectStandardByShip" resultMap="BaseResultMap2">
+        select s.id,s.name from tb_ship_standard sf left join  tb_standard s on sf.standard_id = s.id where sf.ship_id=#{id}
+    </select>
+
+
+</mapper>

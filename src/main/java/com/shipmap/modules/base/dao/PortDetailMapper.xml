@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.PortDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.PortDetail">
+        <result column="id" property="id"/>
+        <result column="port_name" property="portName"/>
+        <result column="chinaname" property="chinaname"/>
+        <result column="englishname" property="englishname"/>
+        <result column="latinname" property="latinname"/>
+        <result column="abbreviation" property="abbreviation"/>
+        <result column="hl" property="hl"/>
+        <result column="ltd" property="ltd"/>
+        <result column="bl" property="bl"/>
+        <result column="gpl" property="gpl"/>
+        <result column="fl" property="fl"/>
+        <result column="kg" property="kg"/>
+        <result column="annotation" property="annotation"/>
+        <result column="num" property="num"/>
+        <result column="portid" property="portid"/>
+        <result column="samplingtime" property="samplingtime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, port_name, chinaname, englishname, latinname, abbreviation, hl, ltd, bl, gpl, fl, kg, annotation,num,portid,samplingtime
+    </sql>
+
+
+    <select id="selectAll" resultType="com.shipmap.modules.base.model.PortDetail">
+        select * from tb_port_detail
+        <trim prefix="where" prefixOverrides="and">
+            AND portid=#{id}
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="deleteByPortId">
+       delete from tb_port_detail where portid = #{id};
+    </delete>
+
+
+    <insert id="insertEntity" parameterType="com.shipmap.modules.base.model.PortDetail">
+        insert into tb_port_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="portid != null">
+                portid,
+            </if>
+            <if test="samplingtime != null">
+                samplingtime,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="num != null">
+                num,
+            </if>
+
+            <if test="chinaname != null">
+                chinaname,
+            </if>
+            <if test="englishname != null">
+                englishname,
+            </if>
+            <if test="latinname != null">
+                latinname,
+            </if>
+            <if test="abbreviation != null">
+                abbreviation,
+            </if>
+            <if test="hl != null">
+                hl,
+            </if>
+            <if test="ltd != null">
+                ltd,
+            </if>
+            <if test="bl != null">
+                bl,
+            </if>
+
+            <if test="gpl != null">
+                gpl,
+            </if>
+
+            <if test="fl != null">
+                fl,
+            </if>
+            <if test="kg != null">
+                kg,
+            </if>
+            <if test="annotation != null">
+                annotation,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="portid != null">
+                #{portid},
+            </if>
+            <if test="samplingtime != null">
+                #{samplingtime},
+            </if>
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="num != null">
+                #{num},
+            </if>
+
+            <if test="chinaname != null">
+                #{chinaname},
+            </if>
+            <if test="englishname != null">
+                #{englishname},
+            </if>
+            <if test="latinname != null">
+                #{latinname},
+            </if>
+            <if test="abbreviation != null">
+                #{abbreviation},
+            </if>
+            <if test="hl != null">
+                #{hl},
+            </if>
+            <if test="ltd != null">
+                #{ltd},
+            </if>
+            <if test="bl != null">
+                #{bl},
+            </if>
+            <if test="gpl != null">
+                #{gpl},
+            </if>
+
+            <if test="fl != null">
+                #{fl},
+            </if>
+            <if test="kg != null">
+                #{kg},
+            </if>
+            <if test="annotation != null">
+                #{annotation},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.ShipMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Ship">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="name_en" property="nameEn"/>
+        <result column="mmsi" property="mmsi"/>
+        <result column="ship_type" property="shipType"/>
+        <result column="fishing_type" property="fishingType"/>
+        <result column="company_id" property="companyId"/>
+        <result column="made_date" property="madeDate"/>
+        <result column="nationality" property="nationality"/>
+        <result column="imo" property="imo"/>
+        <result column="callsign" property="callsign"/>
+        <result column="reg_no" property="regNo"/>
+        <result column="nation_cer_no" property="nationCerNo"/>
+        <result column="fishery_no" property="fisheryNo"/>
+        <result column="total_ton" property="totalTon"/>
+        <result column="ffa_vid" property="ffaVid"/>
+        <result column="wcpfc_cer_no" property="wcpfcCerNo"/>
+        <result column="captain" property="captain"/>
+        <result column="fishing_permit_no" property="fishingPermitNo"/>
+        <result column="shipowner" property="shipowner"/>
+        <result column="sailbox" property="sailbox"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="setting_ver" property="settingVer"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, name_en, mmsi, ship_type, fishing_type, company, made_date, nationality, imo, callsign, reg_no, nation_cer_no, fishery_no, total_ton, ffa_vid, wcpfc_cer_no, captain, fishing_permit_no, shipowner, sailbox, create_time, creator, update_time, updator,setting_ver
+    </sql>
+
+
+    <select id="getShipId" resultType="java.lang.Integer">
+  	  select nextval('tb_ship_id_seq')
+    </select>
+
+    <select id="getVer" resultType="string">
+        select setting_ver from tb_ship where id= #{id}
+    </select>
+
+    <update id="setShipVer">
+        update tb_ship set setting_ver=#{ver1} where id=#{shipId};
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT s.*,c.name company FROM tb_ship s LEFT JOIN tb_company c ON c.id=s.company_id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.fishing.dao.CatchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.fishing.model.Catch">
+        <id column="id" property="id"/>
+        <result column="fish_id" property="fishId"/>
+        <result column="weight" property="weight"/>
+        <result column="num" property="num"/>
+        <result column="well_no" property="wellNo"/>
+        <result column="discarded" property="discarded"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="discarded_weight" property="discardedWeight"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="fishName" property="fishName"/>
+        <result column="standardName" property="standardName"/>
+        <result column="unitName" property="unitName"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, fish_id, weight, num, well_no, discarded, create_time, creator, update_time, updator, discarded_weight, standard_id, unit_id
+    </sql>
+
+    <select id="selectListByLogId" resultMap="BaseResultMap">
+        select c.id, fish_id, c.weight, num, well_no, discarded,discarded_weight, standard_id, unit_id,f.name fishName,s.name standardName,u.name unitName from tb_catch c left join tb_fish f on c.fish_id=f.id left join tb_standard s on c.standard_id=s.id left join tb_unit u on c.unit_id=u.id where log_id=#{id}
+    </select>
+
+    <delete id="deleteByLogId" parameterType="string">
+        delete from tb_catch where log_id = #{id}
+    </delete>
+</mapper>

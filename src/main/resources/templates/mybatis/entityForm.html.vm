@@ -1,0 +1,59 @@
+<form id="${table.entityPath}Form" lay-filter="${table.entityPath}Form" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+    #foreach($field in ${table.fields})
+        #if(!${field.keyFlag} && !${field.name.equals("update_time")}  && !${field.name.equals(
+            "updator")} && !${field.name.equals("create_time")} && !${field.name.equals(
+            "creator")} && !${field.name.equals("del")})##生成普通字段
+            <div class="layui-form-item">
+                <label class="layui-form-label">${field.comment}</label>
+                <div class="layui-input-block">
+                    <input name="${field.propertyName}" placeholder="请输入${field.comment}" type="text"
+                           class="layui-input" maxlength="50"
+                           lay-verify="required" required/>
+                </div>
+            </div>
+        #end
+    #end
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+</form>
+
+
+<script>
+    layui.use(['layer', 'form', 'formSelects', 'admin'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var formSelects = layui.formSelects;
+        var admin = layui.admin;
+
+        var url = 'add';
+        // 回显${table.entityPath}数据
+        var ${table.entityPath} =
+        admin.getTempData('t_${table.entityPath}');
+        if (${table.entityPath}) {
+            url = 'update';
+            form.val('${table.entityPath}Form', ${table.entityPath});
+        }
+
+        // 表单提交事件
+        form.on('submit(btnSubmit)', function (data) {
+            layer.load(2);
+            $.post(url, data.field, function (data) {
+                layer.closeAll('loading');
+                if (data.code == 200) {
+                    top.layer.msg(data.msg, {icon: 1});
+                    admin.putTempData('formOk', true);  // 操作成功刷新表格
+                    // 关闭当前iframe弹出层
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                } else {
+                    top.layer.msg(data.msg, {icon: 2});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+

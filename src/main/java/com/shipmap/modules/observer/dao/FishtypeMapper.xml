@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.FishtypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Fishtype">
+        <id column="fishtypeid" property="fishtypeid"/>
+        <result column="fishsciencename" property="fishsciencename"/>
+        <result column="fishcode" property="fishcode"/>
+        <result column="chinesename" property="chinesename"/>
+        <result column="englishname" property="englishname"/>
+        <result column="obtrailnum" property="obtrailnum"/>
+        <result column="oboutput" property="oboutput"/>
+        <result column="obtotletailnum" property="obtotletailnum"/>
+        <result column="obtotleoutput" property="obtotleoutput"/>
+
+        <result column="obfishcatchid" property="obfishcatchid"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        fishtypeid, fishsciencename, fishcode, chinesename, englishname,obtrailnum ,oboutput ,obtotletailnum ,obtotleoutput, obfishcatchid
+    </sql>
+
+
+    <select id="selectAllFishType" resultType="com.shipmap.modules.observer.model.Fishtype"
+            parameterType="java.lang.String">
+           select * from  observer_fishtype where obfishcatchid = #{id}
+    </select>
+
+    <!--删除-->
+    <delete id="deleteById" parameterType="java.lang.String">
+                  delete from observer_fishtype   where obfishcatchid=#{id}
+      </delete>
+
+    <!--文件导出-->
+    <select id="getfishtype" resultMap="BaseResultMap">
+        select * from observer_fishtype
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+</mapper>

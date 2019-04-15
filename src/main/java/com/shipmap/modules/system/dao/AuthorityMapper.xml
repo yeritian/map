@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.system.dao.AuthorityMapper">
+    <sql id="authorityColumn">
+        id,
+        authority,
+        authority_name,
+        menu_icon,
+        parent_id,
+        menu_url,
+        type,
+        create_time,
+        order_number,
+        class_name
+    </sql>
+
+    <select id="listByUserId" resultType="Authority">
+        SELECT
+        c.id,c.authority,c.authority_name,c.menu_icon,c.parent_id,menu_url,c.type,c.create_time,c.order_number,c.class_name
+        FROM sys_user_role AS a
+        INNER JOIN sys_role_authority AS b
+        ON a.role_id = b.role_id
+        INNER JOIN sys_authority as c
+        ON b.authority_id = c.id
+        where a.user_id = #{userId}
+        GROUP BY c.id
+        ORDER BY c.order_number desc
+    </select>
+
+    <select id="listByRoleId" resultType="java.lang.String">
+        SELECT b.authority FROM sys_role_authority AS a
+        INNER JOIN sys_authority as b
+        ON a.authority_id = b.id
+        WHERE a.role_id = #{roleId}
+    </select>
+
+    <select id="listByRoleIds" resultType="Authority">
+        select
+        <include refid="authorityColumn"/>
+        from sys_authority where id in
+        <foreach collection="array" item="authorityId" open="(" separator="," close=")">
+            #{authorityId}
+        </foreach>
+    </select>
+    <select id="listByParentId" resultType="Authority">
+        select
+        <include refid="authorityColumn"/>
+        from sys_authority
+        where parent_id = #{parentId}
+    </select>
+    <select id="findByAuthority" resultType="Authority">
+        select
+        <include refid="authorityColumn"/>
+        from sys_authority
+        <where>
+        </where>
+        order by order_number desc
+    </select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.TalentsinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Talentsinfo">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="seamanbookno" property="seamanbookno"/>
+        <result column="idnumber" property="idnumber"/>
+        <result column="healthbookno" property="healthbookno"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="updata_time" property="updataTime"/>
+        <result column="updator" property="updator"/>
+        <result column="del" property="del"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, sex, seamanbookno, idnumber, healthbookno, create_time, creator, updata_time, updator, del
+    </sql>
+
+
+    <select id="selectTalentsinfo" resultType="com.shipmap.modules.observer.model.Talentsinfo">
+        SELECT * from observer_talentsinfo as obtal
+        <where>
+            obtal.del=0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

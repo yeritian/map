@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shipmap.modules.system.dao.RoleAuthorityMapper">
+    <sql id="authorityColumn">
+        id,
+        role_id,
+        create_time,
+        authority_id
+    </sql>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.String">
+        DELETE FROM sys_role_authority WHERE role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteByAuthorityId" parameterType="java.lang.String">
+        DELETE FROM sys_role_authority WHERE authority_id = #{authorityId}
+    </delete>
+
+    <select id="listByRoleIds" resultType="RoleAuthority">
+        select
+        <include refid="authorityColumn"/>
+        from sys_role_authority where role_id in
+        <foreach collection="array" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </select>
+</mapper>

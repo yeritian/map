@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.ObserverhooktimeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Observerhooktime">
+        <id column="observerhookid" property="observerhookid"/>
+        <result column="observerinfoid" property="observerinfoid"/>
+        <result column="hooktimes" property="hooktimes"/>
+        <result column="obstartdatehook" property="obstartdatehook"/>
+        <result column="buoybetween" property="buoybetween"/>
+        <result column="floatlinelength" property="floatlinelength"/>
+        <result column="ropelength" property="ropelength"/>
+        <result column="ropebetween" property="ropebetween"/>
+        <result column="throwropespeed" property="throwropespeed"/>
+        <result column="throwropeshipspeed" property="throwropeshipspeed"/>
+        <result column="singlebaskethook" property="singlebaskethook"/>
+        <result column="realitytotalbaskets" property="realitytotalbaskets"/>
+        <result column="realitytotalhook" property="realitytotalhook"/>
+        <result column="sharkhook" property="sharkhook"/>
+        <result column="realitysharkhook" property="realitysharkhook"/>
+        <result column="obbaskets" property="obbaskets"/>
+        <result column="observebasketsrate" property="observebasketsrate"/>
+        <result column="targetspecies" property="targetspecies"/>
+        <result column="obstatedatehook" property="obstatedatehook"/>
+        <result column="obenddatehook" property="obenddatehook"/>
+        <result column="obupstatedate" property="obupstatedate"/>
+        <result column="obupenddate" property="obupenddate"/>
+        <result column="uphooksst" property="uphooksst"/>
+        <result column="uphookpa" property="uphookpa"/>
+        <result column="uphookweather" property="uphookweather"/>
+        <result column="uphookbf" property="uphookbf"/>
+        <result column="lday" property="lday"/>
+        <result column="latitudedegrees" property="latitudedegrees"/>
+        <result column="latitudepoints" property="latitudepoints"/>
+        <result column="longitudesdegrees" property="longitudesdegrees"/>
+        <result column="longitudespoints" property="longitudespoints"/>
+        <result column="tunahooktype" property="tunahooktype"/>
+        <result column="tunahooksize" property="tunahooksize"/>
+        <result column="sharkhooktype" property="sharkhooktype"/>
+        <result column="sharkhooksize" property="sharkhooksize"/>
+        <result column="glowsticks" property="glowsticks"/>
+        <result column="turtlehook" property="turtlehook"/>
+        <result column="turtlehooktype" property="turtlehooktype"/>
+        <result column="catchbirds" property="catchbirds"/>
+        <result column="baitfish1" property="baitfish1"/>
+        <result column="baitfishavglength1" property="baitfishavglength1"/>
+        <result column="baitfish2" property="baitfish2"/>
+        <result column="baitfishavglength2" property="baitfishavglength2"/>
+        <result column="observerremark" property="observerremark"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        observerhookid, observerinfoid, hooktimes, obstartdatehook, buoybetween, floatlinelength, ropelength, ropebetween, throwropespeed, throwropeshipspeed, singlebaskethook, realitytotalbaskets, realitytotalhook, sharkhook, realitysharkhook, obbaskets, observebasketsrate, targetspecies, obstatedatehook, obenddatehook, obupstatedate, obupenddate, uphooksst, uphookpa, uphookweather, uphookbf, lday, latitudedegrees, latitudepoints, longitudesdegrees, longitudespoints, tunahooktype, tunahooksize, sharkhooktype, sharkhooksize, glowsticks, turtlehook, turtlehooktype, catchbirds, baitfish1, baitfishavglength1, baitfish2, baitfishavglength2, observerremark, update_time
+    </sql>
+
+    <select id="selectObsHookTSeq" resultType="java.lang.Integer">
+  	  select nextval('observer_ObsHookTSeq_seq')
+    </select>
+
+    <select id="selectObserverHoooktime" resultMap="BaseResultMap">
+        select obht.* from observer_observerhooktime as obht
+        <trim prefix="where" prefixOverrides="and">
+            AND obht.observerinfoid=#{id} AND obht.del = 0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+        order by obht.create_time desc
+    </select>
+
+    <delete id="delectObserverHooktime">
+            delete from observer_observerhooktime where observerhookid = #{id}
+    </delete>
+
+    <!--根据id查询-->
+    <select id="selectByidhooktime" parameterType="java.lang.String"
+            resultType="com.shipmap.modules.observer.model.Observerhooktime">
+        select * from observer_observerhooktime where observerhookid=#{id}
+    </select>
+
+
+    <select id="selectHooktimeCount" resultType="com.shipmap.modules.observer.model.Observerhooktime">
+        SELECT count(bb.hooktimes) as hooktimes,avg(bb.singlebaskethook) as singlebaskethook FROM
+        observer_observerhooktime as bb
+        <where>
+            bb.observerinfoid=#{id} and bb.del = 0
+        </where>
+    </select>
+
+
+</mapper>

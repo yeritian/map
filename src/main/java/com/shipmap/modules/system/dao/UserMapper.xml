@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shipmap.modules.system.dao.UserMapper">
+    <sql id="userColumn">
+        id,
+        username,
+        password,
+        salt_value,
+        nick_name,
+        avatar,
+        sex,
+        phone,
+        email,
+        email_verified,
+        true_name,
+        id_card,
+        birthday,
+        department_id,
+        state,
+        create_time,
+        update_time
+    </sql>
+    <select id="getByUsername" resultType="com.shipmap.modules.system.model.User">
+        select
+        <include refid="userColumn"></include>
+        from sys_user where username=#{username}
+    </select>
+    <select id="findByUser" resultType="com.shipmap.modules.system.model.User">
+        select
+        <include refid="userColumn"></include>
+        from sys_user
+        <where>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+        </where>
+    </select>
+</mapper>

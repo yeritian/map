@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.PortMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Port">
+        <id column="id" property="id"/>
+        <result column="number" property="number"/>
+        <result column="port_name" property="portName"/>
+        <result column="fishery" property="fishery"/>
+        <result column="jobarea" property="jobArea"/>
+        <result column="createtime" property="createTime"/>
+        <result column="endtime" property="endTime"/>
+        <result column="fishname" property="fishName"/>
+        <result column="samplingtime" property="samplingTime"/>
+        <result column="record" property="record"/>
+        <result column="nwp" property="nwp"/>
+        <result column="type" property="type"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del" property="del"/>
+        <result column="chinaname" property="chinaname"/>
+        <result column="englishname" property="englishname"/>
+        <result column="latinname" property="latinhname"/>
+        <result column="abbreviation" property="abbreviation"/>
+        <result column="hl" property="hl"/>
+        <result column="ltd" property="ltd"/>
+        <result column="bl" property="bl"/>
+        <result column="gpl" property="gpl"/>
+        <result column="fl" property="fl"/>
+        <result column="kg" property="kg"/>
+        <result column="annotation" property="annotation"/>
+        <result column="fishingtime" property="fishingtime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, number, portname, fishery, jobarea, createtime, endtime, fishname, samplingtime, record, nwp, type, updatetime, del,chinaname,englishname,abbreviation,hl,ltd,bl,gpl,fl,kg,annotation,latinname,fishingtime
+    </sql>
+
+
+    <select id="selectAll1" resultType="com.shipmap.modules.base.model.Port">
+        select * from tb_port
+        <trim prefix="where" prefixOverrides="and">
+            AND id=#{id}
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+    </select>
+
+
+    <insert id="insertEntity" parameterType="com.shipmap.modules.base.model.Port">
+        insert into tb_port
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+
+            <if test="chinaname != null">
+                chinaname,
+            </if>
+            <if test="englishname != null">
+                englishname,
+            </if>
+            <if test="latinname != null">
+                latinname,
+            </if>
+            <if test="abbreviation != null">
+                abbreviation,
+            </if>
+            <if test="hl != null">
+                hl,
+            </if>
+            <if test="ltd != null">
+                ltd,
+            </if>
+            <if test="bl != null">
+                bl,
+            </if>
+
+            <if test="fl != null">
+                fl,
+            </if>
+            <if test="kg != null">
+                kg,
+            </if>
+            <if test="annotation != null">
+                annotation,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+
+            <if test="chinaname != null">
+                #{chinaname},
+            </if>
+            <if test="englishname != null">
+                #{englishname},
+            </if>
+            <if test="latinname != null">
+                #{latinname},
+            </if>
+            <if test="abbreviation != null">
+                #{abbreviation},
+            </if>
+            <if test="hl != null">
+                #{hl},
+            </if>
+            <if test="ltd != null">
+                #{ltd},
+            </if>
+            <if test="bl != null">
+                #{bl},
+            </if>
+
+            <if test="fl != null">
+                #{fl},
+            </if>
+            <if test="kg != null">
+                #{kg},
+            </if>
+            <if test="annotation != null">
+                #{annotation},
+            </if>
+        </trim>
+    </insert>
+
+
+    <delete id="deleteByPortId">
+       delete from tb_port where id=#{id}
+    </delete>
+
+
+</mapper>

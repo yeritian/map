@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.fishing.dao.FishinglogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.fishing.model.Fishinglog">
+        <id column="id" property="id"/>
+        <result column="ship_id" property="shipId"/>
+        <result column="log_type" property="logType"/>
+        <result column="action_type" property="actionType"/>
+        <result column="trip_id" property="tripId"/>
+        <result column="net_num" property="netNum"/>
+        <result column="log_date" property="logDate"/>
+        <result column="lon" property="lon"/>
+        <result column="lat" property="lat"/>
+        <result column="start_time" property="startTime"/>
+        <result column="start_lon" property="startLon"/>
+        <result column="start_lat" property="startLat"/>
+        <result column="end_time" property="endTime"/>
+        <result column="end_lon" property="endLon"/>
+        <result column="end_lat" property="endLat"/>
+        <result column="hook_sum" property="hookSum"/>
+        <result column="float_hook_sum" property="floatHookSum"/>
+        <result column="water_deep" property="waterDeep"/>
+        <result column="water_temp" property="waterTemp"/>
+        <result column="machine_sum" property="machineSum"/>
+        <result column="machine_hook_sum" property="machineHookSum"/>
+        <result column="manual_sum" property="manualSum"/>
+        <result column="manual_idle_hook_sum" property="manualIdleHookSum"/>
+        <result column="hook_deep" property="hookDeep"/>
+        <result column="surface_temp" property="surfaceTemp"/>
+        <result column="light_power" property="lightPower"/>
+        <result column="plate_capacity" property="plateCapacity"/>
+        <result column="rope_length" property="ropeLength"/>
+        <result column="drag_speed" property="dragSpeed"/>
+        <result column="light_sum" property="lightSum"/>
+        <result column="wind_velocity" property="windVelocity"/>
+        <result column="current_velocity" property="currentVelocity"/>
+        <result column="current_direction" property="currentDirection"/>
+        <result column="wind_direction" property="windDirection"/>
+        <result column="school_code" property="schoolCode"/>
+        <result column="well_num" property="wellNum"/>
+        <result column="weather" property="weather"/>
+        <result column="net_loc" property="netLoc"/>
+        <result column="sea_condition" property="seaCondition"/>
+        <result column="net_height" property="netHeight"/>
+        <result column="net_expand" property="netExpand"/>
+        <result column="gear_standard" property="gearStandard"/>
+        <result column="visibility" property="visibility"/>
+        <result column="air_temp" property="airTemp"/>
+        <result column="wave_dir" property="waveDir"/>
+        <result column="wave_height" property="waveHeight"/>
+        <result column="submitter" property="submitter"/>
+        <result column="unloading_dest" property="unloadingDest"/>
+        <result column="unloading_callsign" property="unloadingCallsign"/>
+        <result column="unloading_skipjack" property="unloadingSkipjack"/>
+        <result column="unloading_yellowfin" property="unloadingYellowfin"/>
+        <result column="unloading_bigeye" property="unloadingBigeye"/>
+        <result column="unloading_mix" property="unloadingMix"/>
+        <result column="unloading_other" property="unloadingOther"/>
+        <result column="unloading_reject" property="unloadingReject"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="name" property="shipName"/>
+        <result column="remark" property="remark"/>
+        <result column="log_record_type" property="logRecordType"/>
+        <result column="modify_log_id" property="modifyLogId"/>
+        <result column="skipjack" property="skipjack"/>
+        <result column="yellowfin_big" property="yellowFinBig"/>
+        <result column="yellowfin_small" property="yellowFinSmall"/>
+        <result column="bigeye_big" property="bigEyeBig"/>
+        <result column="bigeye_small" property="bigEyeSmall"/>
+        <result column="submit_ver" property="submitVer"/>
+        <result column="is_select" property="isSelect"/>
+        <result column="is_slip" property="isSlip"/>
+        <result column="report_country" property="reportCountry"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, ship_id, log_type, action_type, trip_id, net_num, log_date, lon, lat, start_time, start_lon, start_lat, end_time, end_lon, end_lat, hook_sum, float_hook_sum, water_deep, water_temp, machine_sum, machine_hook_sum, manual_sum,manual_idle_hook_sum, hook_deep, surface_temp, light_power, plate_capacity, rope_length, drag_speed, light_sum, wind_velocity, current_velocity, current_direction, wind_direction, school_code, well_num, weather, net_loc, sea_condition, net_height, net_expand, gear_standard, visibility, air_temp, wave_dir, wave_height, submitter, unloading_dest, unloading_callsign, unloading_skipjack, unloading_yellowfin, unloading_bigeye, unloading_mix, unloading_other, unloading_reject, create_time, creator, update_time, updator,is_select,is_slip,report_country,type
+    </sql>
+
+    <select id="selectByShipIdAndTime" resultMap="BaseResultMap">
+        select id from tb_fishinglog where ship_id=#{id} and log_date = #{logDate} and del=0
+    </select>
+
+    <update id="updateForDel">
+        update tb_fishinglog set del=1 where id=#{id}
+    </update>
+
+    <update id="updateForModifyLogId">
+          update tb_fishinglog set modify_log_id=#{mid} where id=#{oid}
+    </update>
+    <update id="updateForIsSelect">
+        update tb_fishinglog set is_select=#{isSelect} where id=#{oid}
+    </update>
+
+    <select id="selectPages" resultMap="BaseResultMap">
+        select l.id,s.name, s.company_id, ship_id, log_type, action_type, trip_id, log_date + interval '8 hours' as
+        log_date ,
+        lon,lat,submitter,l.log_record_type,l.modify_log_id,l.is_select,l.create_time,l.update_time,l.report_country
+        from tb_fishinglog l left join tb_ship s on l.ship_id=s.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT s.name,s.company_id,l.* FROM tb_fishinglog l left join tb_ship s on l.ship_id=s.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="selectOneById" resultMap="BaseResultMap">
+        select l.id,s.name, ship_id, log_type, action_type, trip_id, net_num, log_date + interval '8 hours' as log_date, lon, lat,l.create_time,
+         start_time + interval '8 hours' as start_time, start_lon, start_lat, end_time + interval '8 hours' as end_time, end_lon,
+        end_lat, hook_sum, float_hook_sum, water_deep, water_temp, machine_sum, machine_hook_sum, manual_sum,manual_idle_hook_sum, hook_deep, surface_temp,
+        light_power, plate_capacity, rope_length, drag_speed, light_sum, wind_velocity, current_velocity, current_direction, wind_direction, school_code,
+        well_num, weather, net_loc, sea_condition, net_height, net_expand, gear_standard, visibility, air_temp, wave_dir, wave_height, submitter, unloading_dest,
+         unloading_callsign, unloading_skipjack, unloading_yellowfin, unloading_bigeye, unloading_mix, unloading_other, unloading_reject,skipjack,yellowfin_small,
+         yellowfin_big,bigeye_small,bigeye_big,l.remark,log_record_type,modify_log_id,submit_ver,is_select,is_slip,l.report_country,l.type
+        from tb_fishinglog l
+        left join tb_ship s on l.ship_id=s.id
+        where l.id=#{id}
+    </select>
+
+    <select id="selectCatchByLogId" resultType="com.shipmap.modules.fishing.model.Catch">
+        SELECT c.*,f.name fishname from tb_catch c left JOIN tb_fish f on c.fish_id=f.id where log_id=#{log_id}
+    </select>
+
+    <select id="selectDiscardByLogId" resultType="com.shipmap.modules.fishing.model.Discard">
+        SELECT * from tb_discard  where log_id=#{log_id}
+    </select>
+
+    <select id="selectTongJiPages" resultType="com.shipmap.modules.fishing.model.FishingLogTongJi">
+        select s.company_id,c.name companyName ,s.id ship_id,s.name shipName,tc.tripCount,lc.logcount from tb_ship s
+        left join tb_company c on s.company_id=c.id left join
+        (select ship_id,count(*) tripCount from tb_trip t group by ship_id) tc on tc.ship_id=s.id left join
+        (select ship_id,count(*) logCount from tb_fishinglog l where
+        l.log_date>=to_timestamp(substring(to_char(now(),'yyyy-MM-dd hh24:MI:ss') FROM 1 FOR 10),'yyyy-MM-dd')- interval
+        '1 year' and l.del=0 and l.is_select=0 group by ship_id) lc
+        on lc.ship_id=s.id
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+</mapper>

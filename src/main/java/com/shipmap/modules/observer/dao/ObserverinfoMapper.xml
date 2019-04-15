@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.ObserverinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Observerinfo">
+        <id column="observerinfoid" property="observerinfoid"/>
+        <result column="observerinfono" property="observerinfono"/>
+        <result column="observeoceanarea" property="observeoceanarea"/>
+        <result column="observerinfoname" property="observerinfoname"/>
+        <result column="startobservedate" property="startobservedate"/>
+        <result column="endobservedate" property="endobservedate"/>
+        <result column="shipport" property="shipport"/>
+        <result column="shipname" property="shipname"/>
+        <result column="shipdate" property="shipdate"/>
+        <result column="destinationport" property="destinationport"/>
+        <result column="disembarkdate" property="disembarkdate"/>
+        <result column="trapezerange" property="trapezerange"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="company" property="company"/>
+        <result column="years" property="years"/>
+        <result column="obfishtype" property="obfishtype"/>
+
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="updator" property="updator"/>
+        <result column="del" property="del"/>
+
+        <result column="counthooktimes" property="counthooktimes"/>
+        <result column="sumrealitytotalbaskets" property="sumrealitytotalbaskets"/>
+        <result column="sumobbaskets" property="sumobbaskets"/>
+
+        <result column="avgsinglebaskethook" property="avgsinglebaskethook"/>
+        <result column="hooktimes" property="hooktimes"/>
+        <result column="hooklog" property="hooklog"/>
+        <result column="obfishcatch" property="obfishcatch"/>
+        <result column="obbasketnum" property="obbasketnum"/>
+        <result column="obbaskettotsum" property="obbaskettotsum"/>
+        <result column="fthooktimes" property="fthooktimes"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        observerinfoid, observerinfono, observeoceanarea, observerinfoname, startobservedate, endobservedate, shipport, shipname, shipdate, destinationport, disembarkdate, trapezerange, update_time, company, years, obfishtype
+    </sql>
+
+
+    <select id="selectObserverInfoSeq" resultType="java.lang.Integer">
+  	    select nextval('observer_ObserverInfo_seq')
+    </select>
+
+    <!--单个删除 物理删除-->
+    <delete id="deleteObserverInfoByID" parameterType="java.lang.String">
+        delete from observer_observerinfo where observerinfoid = #{id}
+    </delete>
+
+
+    <!--根据id查询详情-->
+    <select id="selectByidObserve" parameterType="java.lang.String"
+            resultType="com.shipmap.modules.observer.model.Observerinfo">
+        select * from observer_observerinfo where observerinfoid=#{id}
+    </select>
+
+    <!-- 查询++ 统计 -->
+    <select id="selectbufen" resultType="com.shipmap.modules.observer.model.Observerinfo">
+        select * from observer_observerinfo as obs
+        <trim prefix="where" prefixOverrides="and">
+            and obs.del=0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+        ORDER BY obs.create_time DESC
+    </select>
+
+</mapper>

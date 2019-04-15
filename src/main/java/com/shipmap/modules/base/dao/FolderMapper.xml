@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.FolderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Folder">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="owner" property="owner"/>
+        <result column="update_time " property="updateTime "/>
+        <result column="create_time" property="createTime"/>
+
+    </resultMap>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        WITH RECURSIVE r AS (
+           SELECT * FROM tb_folder WHERE parent_id = '-1'
+           union   ALL
+           SELECT tb_folder.* FROM tb_folder, r WHERE tb_folder.parent_id = r.id
+        )
+        SELECT * FROM r ORDER BY create_time;
+    </select>
+
+    <select id="selectAllBynid" resultMap="BaseResultMap">
+        WITH RECURSIVE r AS (
+           SELECT * FROM tb_folder WHERE parent_id =#{nodeId}
+           union   ALL
+           SELECT tb_folder.* FROM tb_folder, r WHERE tb_folder.parent_id = r.id
+        )
+        SELECT * FROM r ORDER BY create_time;
+    </select>
+
+    <select id="selectFolderById" resultMap="BaseResultMap">
+        select  * from tb_folder where id=#{nodeId}
+    </select>
+
+
+    <select id="selectByFolder" resultMap="BaseResultMap">
+         select  * from tb_folder where 1=1
+    </select>
+
+    <select id="findFolderName" resultType="java.lang.Integer">
+        select count(*) from tb_folder where parent_id=#{parentId} and title=#{context}
+    </select>
+
+    <delete id="deletenodeid">
+       delete from tb_folder where id = #{nodeId};
+    </delete>
+
+
+</mapper>

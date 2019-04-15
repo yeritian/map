@@ -1,0 +1,182 @@
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="width: 120px;">
+                        <select id="sltKey">
+                            <option value="">-搜索条件-</option>
+                            #foreach($field in ${table.fields})
+                                #if(!${field.keyFlag} && !${field.name.equals("update_time")}  && !${field.name.equals(
+                                    "updator")} && !${field.name.equals("create_time")} && !${field.name.equals(
+                                    "creator")} && !${field.name.equals("del")})##生成普通字段
+                                    <option value="${field.name}">${field.comment}</option>
+                                #end
+                            #end
+                        </select>
+                    </div>
+                    <div class="layui-inline">
+                        <input id="edtSearch" class="layui-input" type="text" placeholder="输入关键字"/>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                        <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                        <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="layui-table" id="${table.entityPath}Table" lay-filter="${table.entityPath}Table"></table>
+        </div>
+    </div>
+
+</div>
+
+<!-- 表单弹窗 -->
+<script type="text/html" id="${table.entityPath}Model">
+    <form id="${table.entityPath}Form" lay-filter="${table.entityPath}Form" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        #foreach($field in ${table.fields})
+            #if(!${field.keyFlag} && !${field.name.equals("update_time")}  && !${field.name.equals(
+                "updator")} && !${field.name.equals("create_time")} && !${field.name.equals(
+                "creator")} && !${field.name.equals("del")})##生成普通字段
+                <div class="layui-form-item">
+                    <label class="layui-form-label">${field.comment}</label>
+                    <div class="layui-input-block">
+                        <input name="${field.propertyName}" placeholder="请输入${field.comment}" type="text"
+                               class="layui-input" maxlength="50"
+                               lay-verify="required" required/>
+                    </div>
+                </div>
+            #end
+        #end
+        <div class="layui-form-item text-right">
+            <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+            <button class="layui-btn" lay-filter="${table.entityPath}FormSubmit" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'admin', 'config', 'formSelects', 'laytpl'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var config = layui.config;
+        var formSelects = layui.formSelects;
+        var laytpl = layui.laytpl;
+
+        form.render('select');
+        // 渲染表格
+        var ins1 = table.render({
+            elem: '#${table.entityPath}Table',
+            url: config.base_server + '${package.ModuleName}/${table.entityPath}',
+            page: true,
+            cols: [[
+                {type: 'checkbox'}, {type: 'numbers'},
+                #foreach($field in ${table.fields})
+                    #if(!${field.keyFlag}  && !${field.name.equals("update_time")}  && !${field.name.equals(
+                        "updator")} && !${field.name.equals("create_time")} && !${field.name.equals(
+                        "creator")} && !${field.name.equals("del")})##生成普通字段
+                        {field: '${field.propertyName}', sort: true, title: '${field.comment}'},
+                    #end
+                #end
+                {align: 'center', toolbar: '#tableBar', title: '操作'}
+            ]]
+        });
+
+        // 添加按钮点击事件
+        $('#btnAdd').click(function () {
+            showEditModel();
+        });
+
+        // 搜索按钮点击事件
+        $('#btnSearch').click(function () {
+            var key = $('#sltKey').val();
+            var value = $('#edtSearch').val();
+            table.reload('${table.entityPath}Table', {where: {searchKey: key, searchValue: value}});
+        });
+        // 表单提交事件
+        form.on('submit(${table.entityPath}FormSubmit)', function (data) {
+            layer.load(2);
+            var theMethod = data.field.id ? "PUT" : "POST";
+            admin.req('${package.ModuleName}/${table.entityPath}', data.field, function (data) {
+                layer.closeAll('loading');
+                if (data.code == 200) {
+                    layer.msg(data.msg, {icon: 1});
+                    table.reload('${table.entityPath}Table');
+                    admin.closeDialog('#${table.entityPath}Form');
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+            }, theMethod);
+            return false;
+        });
+        // 工具条点击事件
+        table.on('tool(${table.entityPath}Table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') { // 修改
+                showEditModel(data);
+            } else if (obj.event === 'del') { //删除
+                doDelete(obj);
+            }
+        });
+
+        // 删除
+        function doDelete(obj) {
+            layer.confirm('确定要删除吗？', {
+                skin: 'layui-layer-admin'
+            }, function (i) {
+                layer.close(i);
+                layer.load(2);
+                admin.req('${table.entityPath}/delete/' + obj.data.id, {}, function (data) {
+                    layer.closeAll('loading');
+                    if (data.code == 200) {
+                        layer.msg(data.msg, {icon: 1});
+                        obj.del();
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }, 'delete');
+            });
+        };
+        // 导出excel
+        $('#btnExp').click(function () {
+            var checkRows = table.checkStatus('${table.entityPath}Table');
+            if (checkRows.data.length == 0) {
+                layer.msg('请选择要导出的数据', {icon: 2});
+            } else {
+                table.exportFile(ins1.config.id, checkRows.data, 'xls');
+            }
+        });
+
+        // 显示表单弹窗
+        function showEditModel(data) {
+            admin.open({
+                type: 1,
+                title: data ? '修改${entity}' : '添加${entity}',
+                content: laytpl(document.getElementById('${table.entityPath}Model').innerHTML).render(data || {}),
+                success: function (layero, index) {
+                    $('#${table.entityPath}Form')[0].reset();
+                    if (data) {
+                        form.val('${table.entityPath}Form', data);
+                    }
+                    $(layero).children('.layui-layer-content').css('overflow', 'visible');  // 禁止出现滚动条
+                }
+            });
+        }
+
+    });
+</script>

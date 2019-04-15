@@ -1,0 +1,77 @@
+package ${package.ServiceImpl}import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+;
+${package.Entity}
+.${entity};
+    ${package.Mapper}
+        .${table.mapperName};
+    ${package.Service}
+        .${table.serviceName};
+    ${superServiceImplClassPackage}
+        ;
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+@Autowired
+private ${entity}Mapper ${table.entityPath}Mapper;
+/**
+ * 分页查询
+ * @param ${table.entityPath}Page 分页对象
+ * @param column 表的列名
+ * @param value 匹配的值
+ */
+@Override
+public Page<${entity}> list(Page<${entity}> ${table.entityPath}Page,String column,String value){
+        Wrapper<${entity}> wrapper=new EntityWrapper<>();
+        if(StringUtil.isNotBlank(column)){
+        wrapper.like(column,value);
+        }
+    ${table.entityPath}Page.setRecords(baseMapper.selectPage(${table.entityPath}Page,wrapper));
+        return ${table.entityPath}Page;
+        }
+/**
+ * 添加
+ * @param ${table.entityPath} 添加对象
+ * @param activeUser 当前登录用户
+ */
+@Override
+public boolean add(${entity} ${table.entityPath},ActiveUser activeUser){
+        return ${table.entityPath}Mapper.insert(${table.entityPath})>0;
+        }
+/**
+ * 更新
+ * @param ${table.entityPath} 修改对象
+ * @param activeUser 当前登录用户
+ */
+@Override
+public boolean update(${entity} ${table.entityPath},ActiveUser activeUser){
+        return ${table.entityPath}Mapper.updateById(${table.entityPath})>0;
+        }
+/**
+ * 根据id查询
+ * @param ${table.entityPath}Id
+ */
+@Override
+public ${entity} getById(String ${table.entityPath}Id){
+        return ${table.entityPath}Mapper.selectById(${table.entityPath}Id);
+        }
+/**
+ * 根据id删除
+ * @param ${table.entityPath}Id
+ */
+@Override
+public boolean delete(String ${table.entityPath}Id){
+        return ${table.entityPath}Mapper.deleteById(${table.entityPath}Id)>0;
+        }
+
+        }
+

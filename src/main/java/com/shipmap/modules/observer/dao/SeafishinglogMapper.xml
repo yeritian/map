@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.SeafishinglogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Seafishinglog">
+        <id column="seafishingid" property="seafishingid"/>
+        <result column="observerinfoid" property="observerinfoid"/>
+        <result column="homeworkhook" property="homeworkhook"/>
+        <result column="seastartdatehook" property="seastartdatehook"/>
+        <result column="realityhook" property="realityhook"/>
+        <result column="chinesename" property="chinesename"/>
+        <result column="fullweightww" property="fullweightww"/>
+        <result column="workingweighgt" property="workingweighgt"/>
+        <result column="workingweighgx" property="workingweighgx"/>
+        <result column="otherworkingweight" property="otherworkingweight"/>
+        <result column="explain" property="explain"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="seafishingremark" property="seafishingremark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        seafishingid, observerinfoid, homeworkhook, seastartdatehook, realityhook, chinesename, fullweightww, workingweighgt, workingweighgx, otherworkingweight, explain, update_time, seafishingremark
+    </sql>
+
+
+    <select id="selectFishIdSeq" resultType="java.lang.Integer">
+  	  select nextval('observer_seafishlog_seq')
+    </select>
+
+    <select id="selectSeafishlog" resultMap="BaseResultMap">
+        select * from observer_seafishinglog as obs
+        <trim prefix="where" prefixOverrides="and">
+            AND obs.observerinfoid=#{id} AND obs.del = 0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+        order by obs.create_time desc
+    </select>
+
+    <!--单个删除-->
+    <delete id="deleteSeafishlog" parameterType="java.lang.String">
+        delete from observer_seafishinglog where seafishingid = #{id}
+    </delete>
+
+
+    <!--根据id查询-->
+    <select id="selectByid" parameterType="java.lang.String"
+            resultType="com.shipmap.modules.observer.model.Seafishinglog">
+        select * from observer_seafishinglog where seafishingid=#{id}
+    </select>
+
+    <!--导入-->
+    <insert id="insertexcelog" parameterType="com.shipmap.modules.observer.model.Seafishinglog">
+        insert into observer_seafishinglog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seafishingid!= null">
+                seafishingid,
+            </if>
+            <if test="observerinfoid!= null">
+                observerinfoid,
+            </if>
+            <if test="homeworkhook!= null">
+                homeworkhook,
+            </if>
+            <if test="seastartdatehook!= null">
+                seastartdatehook,
+            </if>
+            <if test="realityhook!= null">
+                realityhook,
+            </if>
+            <if test="chinesename!= null">
+                chinesename,
+            </if>
+            <if test="fullweightww!= null">
+                fullweightww,
+            </if>
+            <if test="workingweighgt!= null">
+                workingweighgt,
+            </if>
+            <if test="otherworkingweight!= null">
+                otherworkingweight,
+            </if>
+            <if test="explain!= null">
+                explain,
+            </if>
+            <if test="updateTime!= null">
+                update_time,
+            </if>
+            <if test="seafishingremark!= null">
+                seafishingremark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="seafishingid!= null">
+                #{seafishingid},
+            </if>
+            <if test="observerinfoid!= null">
+                #{observerinfoid},
+            </if>
+            <if test="homeworkhook!= null">
+                #{homeworkhook},
+            </if>
+            <if test="seastartdatehook!= null">
+                #{seastartdatehook},
+            </if>
+            <if test="realityhook!= null">
+                #{realityhook},
+            </if>
+            <if test="chinesename!= null">
+                #{chinesename},
+            </if>
+            <if test="fullweightww!= null">
+                #{fullweightww},
+            </if>
+            <if test="workingweighgt!= null">
+                #{workingweighgt},
+            </if>
+            <if test="otherworkingweight!= null">
+                #{otherworkingweight},
+            </if>
+            <if test="explain!= null">
+                #{explain},
+            </if>
+            <if test="updateTime!= null">
+                #{updateTime},
+            </if>
+            <if test="seafishingremark!= null">
+                #{seafishingremark},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="selectfishlogCount" resultType="java.lang.Integer">
+        SELECT count(oblog.observerinfoid) from observer_seafishinglog as oblog
+        <where>
+            oblog.observerinfoid=#{id} and oblog.del = 0
+        </where>
+    </select>
+
+</mapper>

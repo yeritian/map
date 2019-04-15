@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.SpecificationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Specification">
+        <id column="id" property="id"/>
+        <result column="fish_id" property="fishId"/>
+        <result column="weight" property="weight"/>
+        <result column="mantissa" property="mantissa"/>
+        <result column="monthly_name" property="monthlyName"/>
+        <result column="super_fish" property="superFish"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, fishId, weight, mantissa, monthlyid
+    </sql>
+
+    <!--//条件查询-->
+    <select id="getSpecification" resultMap="BaseResultMap">
+        select * from tb_specification
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getSpecificationId" resultType="java.lang.Integer">
+        select nextval('tb_specification_id_seq')
+    </select>
+
+</mapper>

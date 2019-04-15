@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.ResumeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Resume">
+        <id column="id" property="id"/>
+        <result column="voyage" property="voyage"/>
+        <result column="starttime" property="starttime"/>
+        <result column="endtime" property="endtime"/>
+        <result column="talentsinfoid" property="talentsinfoid"/>
+        <result column="shipname" property="shipname"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, shipnames, voyage, starttime, endtime, talentsinfoid
+    </sql>
+
+
+    <select id="selectTalenDetail" resultType="com.shipmap.modules.observer.model.Resume">
+        select  *  from observer_resume where talentsinfoid=#{talentsid}
+     </select>
+
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.FishcatchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Fishcatch">
+        <id column="obfishcatchid" property="obfishcatchid"/>
+        <result column="obfishcatchhooks" property="obfishcatchhooks"/>
+        <result column="obfishcatchdatehook" property="obfishcatchdatehook"/>
+        <result column="obbasketnum" property="obbasketnum"/>
+        <result column="obbaskettotsum" property="obbaskettotsum"/>
+        <result column="observerinfoid" property="observerinfoid"/>
+        <result column="obtrailnum" property="obtrailnum"/>
+        <result column="oboutput" property="oboutput"/>
+        <result column="obtotletailnum" property="obtotletailnum"/>
+        <result column="obtotleoutput" property="obtotleoutput"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="fcremark" property="fcremark"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+      obfishcatchid, obfishcatchhooks, obfishcatchdatehook, obbasketnum, obbaskettotsum, observerinfoid, update_time, fishtypeid, fcremark
+    </sql>
+
+    <select id="selectFishcatchSeq" resultType="java.lang.Integer">
+     select nextval('observer_Fishcatch_seq')
+   </select>
+
+
+    <select id="selectFishcatch" resultMap="BaseResultMap">
+        SELECT * FROM
+        observer_fishcatch as obfc
+        <trim prefix="where" prefixOverrides="and">
+            AND obfc.observerinfoid=#{id} AND obfc.del = 0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+        order by obfc.create_time desc
+    </select>
+
+    <delete id="deleteByFishcatchId" parameterType="java.lang.String">
+                  delete from observer_fishcatch   where obfishcatchid=#{id}
+      </delete>
+
+    <select id="selectFishcatchCount" resultType="com.shipmap.modules.observer.model.Fishcatch">
+        select count(obhc.obfishcatchhooks) as obfishcatchhooks,sum(obhc.obbasketnum) as
+        obbasketnum,sum(obhc.obbaskettotsum) as obbaskettotsum FROM
+        observer_fishcatch as obhc
+        <where>
+            obhc.observerinfoid=#{id} and obhc.del = 0
+        </where>
+    </select>
+
+
+</mapper>

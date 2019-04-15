@@ -1,0 +1,46 @@
+package ${package.Service};
+${package.Entity}
+.${entity};
+    ${superServiceClassPackage}
+        ;
+
+/**
+ * <p>
+ * $!{table.comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+        /**
+         * 分页查询
+         * @param ${table.entityPath}Page 分页对象
+         * @param column 表的列名
+         * @param value 匹配的值
+         */
+        Page<${entity}> list(Page<${entity}> ${table.entityPath}Page,String column,String value);
+        /**
+         * 根据id查询
+         * @param ${table.entityPath}Id
+         */
+    ${entity} getById(String ${table.entityPath}Id);
+        /**
+         * 添加
+         * @param ${table.entityPath} 添加对象
+         * @param activeUser 当前登录用户
+         */
+        boolean add(${entity} ${table.entityPath},ActiveUser activeUser)throws BusinessException;
+        /**
+         * 更新
+         * @param ${table.entityPath} 修改对象
+         * @param activeUser 当前登录用户
+         */
+        boolean update(${entity} ${table.entityPath},ActiveUser activeUser);
+        /**
+         * 根据id删除
+         * @param ${table.entityPath}Id
+         */
+        boolean delete(String ${table.entityPath}Id);
+        }

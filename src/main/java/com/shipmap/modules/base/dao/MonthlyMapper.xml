@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.MonthlyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Monthly">
+        <id column="id" property="id"/>
+        <result column="company_name" property="companyName"/>
+        <result column="job_type" property="jobType"/>
+        <result column="job_the_area" property="jobTheArea"/>
+        <result column="EEZ" property="eez"/>
+        <result column="province" property="province"/>
+        <result column="job_time" property="jobTime"/>
+        <result column="ship_name" property="shipName"/>
+        <result column="job_num_of_days" property="jobNumOfDays"/>
+        <result column="start_site" property="startSite"/>
+        <result column="end_site" property="endSite"/>
+        <result column="cast_hook_num" property="castHookNum"/>
+        <result column="annotation" property="annotation"/>
+        <result column="creator" property="creator"/>
+        <result column="updator" property="updator"/>
+        <result column="del" property="del"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="elses" property="elseFish"/>
+        <result column="ship_put_in" property="shipPutIn"/>
+        <result column="ship_EEZ_the_fish" property="shipEezTheFish"/>
+        <result column="ship_no_production" property="shipNoProduction"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, companyName, jobType, jobTheArea, EEZ, province, jobTime, shipName, jobNumOfDays, startSite, endSite, castHookNum, fishNameId, specificationId, annotation, creator, updator, del, create_time, update_time
+    </sql>
+
+    <select id="getMonthly" resultMap="BaseResultMap">
+        select * from tb_monthly
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+    <select id="getMonthlyId" resultType="java.lang.Integer">
+        select nextval('tb_monthly_id_seq')
+    </select>
+
+</mapper>

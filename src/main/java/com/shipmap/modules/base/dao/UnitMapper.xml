@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.UnitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.Unit">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+        <result column="del" property="del"/>
+        <result column="weight" property="weight"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.shipmap.modules.base.model.NameVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, remark, create_time, creator, update_time, updator, del, weight
+    </sql>
+
+    <select id="selectIdSeq" resultType="java.lang.Integer">
+  	  select nextval('tb_unit_id_seq')
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap2">
+        select u.id,u.name from tb_unit u where u.del=0
+    </select>
+
+    <select id="selectUnitByShip" resultMap="BaseResultMap2">
+        select s.id,s.name from tb_ship_unit sf left join  tb_unit s on sf.unit_id = s.id where sf.ship_id=#{id}
+    </select>
+    <!--列表剩余单位-->
+    <select id="selectRemainUnit" resultMap="BaseResultMap2">
+        select tu.id,tu.name from tb_unit tu where not exists(select * from tb_ship_unit tsu where tu.id=tsu.unit_id and tsu.ship_id=#{id})
+    </select>
+
+</mapper>

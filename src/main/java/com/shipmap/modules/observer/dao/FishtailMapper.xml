@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.observer.dao.FishtailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.observer.model.Fishtail">
+        <id column="fishtailid" property="fishtailid"/>
+        <result column="observerinfoid" property="observerinfoid"/>
+        <result column="ftworkhooktimes" property="ftworkhooktimes"/>
+        <result column="ftstatehookdate" property="ftstatehookdate"/>
+        <result column="ftbasketnum" property="ftbasketnum"/>
+        <result column="ftcatchhook" property="ftcatchhook"/>
+        <result column="chinesename" property="chinesename"/>
+        <result column="englishname" property="englishname"/>
+        <result column="scientificname" property="scientificname"/>
+        <result column="kindcode" property="kindcode"/>
+        <result column="capturetimestate" property="capturetimestate"/>
+        <result column="retaindiscard" property="retaindiscard"/>
+        <result column="fulllength" property="fulllength"/>
+        <result column="foreheadforklg" property="foreheadforklg"/>
+        <result column="lowerforklg" property="lowerforklg"/>
+        <result column="caudalfin" property="caudalfin"/>
+        <result column="conversionlbd" property="conversionlbd"/>
+        <result column="ftfullweight" property="ftfullweight"/>
+        <result column="ftprocesswgt" property="ftprocesswgt"/>
+        <result column="ftprocesswgx" property="ftprocesswgx"/>
+        <result column="ftprocesseachw" property="ftprocesseachw"/>
+        <result column="ftfoodclass" property="ftfoodclass"/>
+        <result column="ftsex" property="ftsex"/>
+        <result column="ftautumnperiod" property="ftautumnperiod"/>
+        <result column="eggtestisweight" property="eggtestisweight"/>
+        <result column="liverweight" property="liverweight"/>
+        <result column="pinnipedia" property="pinnipedia"/>
+        <result column="eggshellglandwidth" property="eggshellglandwidth"/>
+        <result column="ovarianeggsdiameter" property="ovarianeggsdiameter"/>
+        <result column="embryoswombnum" property="embryoswombnum"/>
+        <result column="sharkmantissa" property="sharkmantissa"/>
+        <result column="sexlength" property="sexlength"/>
+        <result column="ftdescribe" property="ftdescribe"/>
+        <result column="vertebraeno" property="vertebraeno"/>
+        <result column="finspine" property="finspine"/>
+        <result column="gastriccontents" property="gastriccontents"/>
+        <result column="gastriccontentsimg" property="gastriccontentsimg"/>
+        <result column="kindnum" property="kindnum"/>
+        <result column="gonadno" property="gonadno"/>
+        <result column="organizationno" property="organizationno"/>
+        <result column="ftrecord" property="ftrecord"/>
+        <result column="ftotherrecord" property="ftotherrecord"/>
+        <result column="ftremark" property="ftremark"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        fishtailid, observerinfoid, ftworkhooktimes, ftstatehookdate, ftbasketnum, ftcatchhook, chinesename, englishname, scientificname, kindcode, capturetimestate, retaindiscard, fulllength, foreheadforklg, lowerforklg, caudalfin, conversionlbd, ftfullweight, ftprocesswgt, ftprocesswgx, ftprocesseachw, ftfoodclass, ftsex, ftautumnperiod, eggtestisweight, liverweight, pinnipedia, eggshellglandwidth, ovarianeggsdiameter, embryoswombnum, sharkmantissa, sexlength, ftdescribe, vertebraeno, finspine, gastriccontents, gastriccontentsimg, kindnum, gonadno, organizationno, ftrecord, ftotherrecord, ftremark, update_time
+    </sql>
+
+    <select id="selectFishtaillist" resultMap="BaseResultMap">
+        select * from observer_fishtail as ftal
+        <trim prefix="where" prefixOverrides="and">
+            AND ftal.observerinfoid=#{id} AND ftal.del = 0
+            <if test="ew.sqlSegment != null">
+                ${ew.sqlSegment}
+            </if>
+        </trim>
+        order by ftal.create_time desc
+    </select>
+
+
+    <!--删除-->
+    <delete id="deleteFishtaillist">
+            delete from observer_observerhooktime where fishtailid = #{id}
+    </delete>
+
+    <!--详情ById-->
+    <select id="selectByidFishtail" parameterType="java.lang.String"
+            resultType="com.shipmap.modules.observer.model.Fishtail">
+            select *  from   observer_fishtail where fishtailid = #{id}
+       </select>
+
+    <select id="seletcFishtailCount" resultType="java.lang.Integer">
+        SELECT count(obft.ftworkhooktimes) as fthooktimes FROM observer_fishtail as obft
+        <where>
+            obft.observerinfoid=#{id} and obft.del = 0
+        </where>
+    </select>
+
+</mapper>

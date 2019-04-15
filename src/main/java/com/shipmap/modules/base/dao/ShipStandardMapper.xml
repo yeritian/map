@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shipmap.modules.base.dao.ShipStandardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shipmap.modules.base.model.ShipStandard">
+        <id column="ship_id" property="shipId"/>
+        <id column="standard_id" property="standardId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator" property="updator"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ship_id, standard_id, create_time, creator, update_time, updator
+    </sql>
+
+    <delete id="deleteByIds">
+      delete from tb_ship_standard where ship_id=#{shipId} and standard_id=#{standardId}
+    </delete>
+</mapper>
